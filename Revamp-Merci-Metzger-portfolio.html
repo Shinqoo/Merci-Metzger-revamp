@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>marcimetzger</title>
+
+  <!-- Font Awesome & jQuery -->
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+
+  <script>
+    $(document).ready(function () {
+      let lastScrollTop = 0;
+
+      $(window).on("scroll", function () {
+        const scrollTop = $(this).scrollTop();
+
+        // Shrink navbar + invert logo on scroll
+        if (scrollTop > 0) {
+          $("nav").addClass("black");
+          $(".merci").addClass("flip");
+        } else {
+          $("nav").removeClass("black");
+          $(".merci").removeClass("flip");
+        }
+
+        // Hide navbar when scrolling down, show when scrolling up
+        // if (scrollTop > lastScrollTop && scrollTop > 100) {
+        //   $("nav").addClass("hide");
+        // } else {
+        //   $("nav").removeClass("hide");
+        // }
+
+        lastScrollTop = scrollTop;
+      });
+
+      // Toggle mobile menu
+      $(".menu h4").click(function () {
+        $("nav ul").toggleClass("active");
+      });
+
+
+    // ✅ Carousel logic moved INSIDE ready()
+      const carousel = document.querySelector('.carousel-images');
+      const images = document.querySelectorAll('.carousel-images img');
+      const prevBtn = document.querySelector('.prev');
+      const nextBtn = document.querySelector('.next');
+      const dotsContainer = document.querySelector('.dots');
+
+      const totalOriginalImages = images.length;
+      const firstClone = images[0].cloneNode(true);
+      const lastClone = images[totalOriginalImages - 1].cloneNode(true);
+
+      carousel.appendChild(firstClone);
+      carousel.prepend(lastClone);
+
+      const allImages = carousel.querySelectorAll('img');
+      let index = 1; // start at first real image
+      let isTransitioning = false;
+
+      // Create dots
+      for (let i = 0; i < totalOriginalImages; i++) {
+        const dot = document.createElement('span');
+        dot.classList.add('dot');
+        if (i === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => {
+          if (isTransitioning) return;
+          index = i + 1;
+          moveSlide();
+          resetAutoSlide();
+        });
+        dotsContainer.appendChild(dot);
+      }
+
+      function updateDots() {
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach(dot => dot.classList.remove('active'));
+        let activeIndex = index - 1;
+        if (activeIndex < 0) activeIndex = totalOriginalImages - 1;
+        if (activeIndex >= totalOriginalImages) activeIndex = 0;
+        dots[activeIndex].classList.add('active');
+      }
+
+      function moveSlide() {
+        isTransitioning = true;
+        carousel.style.transition = 'transform 0.5s ease-in-out';
+        carousel.style.transform = `translateX(${-index * 100}%)`;
+        updateDots();
+      }
+
+      carousel.addEventListener('transitionend', () => {
+        if (index === 0) index = totalOriginalImages;
+        if (index === allImages.length - 1) index = 1;
+
+        carousel.style.transition = 'none';
+        carousel.style.transform = `translateX(${-index * 100}%)`;
+        isTransitioning = false;
+
+        // Force reflow
+        void carousel.offsetWidth;
+      });
+
+      nextBtn.addEventListener('click', () => {
+        if (isTransitioning) return;
+        index++;
+        moveSlide();
+        resetAutoSlide();
+      });
+
+      prevBtn.addEventListener('click', () => {
+        if (isTransitioning) return;
+        index--;
+        moveSlide();
+        resetAutoSlide();
+      });
+
+      let autoSlide = setInterval(() => {
+        if (!isTransitioning) {
+          index++;
+          moveSlide();
+        }
+      }, 4000);
+
+      function resetAutoSlide() {
+        clearInterval(autoSlide);
+        autoSlide = setInterval(() => {
+          if (!isTransitioning) {
+            index++;
+            moveSlide();
+          }
+        }, 4000);
+      }
+
+      // Initialize
+      carousel.style.transform = `translateX(${-index * 100}%)`;
+
+
+
+
+
+
+    
+    });
+  </script>
+</head>
+<body>
+  <!-- Mobile Responsive Bar -->
+  <div class="responsive-bar">
+    <div class="logo">
+      <img
+        class="merci"
+        src="https://img1.wsimg.com/isteam/ip/067a4d42-19e8-46d9-9bed-578bf62dd44e/blob-6c0c2e0.png/:/rs=w:536,h:167,cg:true,m/cr=w:536,h:167/qt=q:95"
+        alt="Logo"
+      />
+    </div>
+    <div class="menu">
+      <h4>Menu</h4>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">
+      <img
+        class="merci"
+        src="https://img1.wsimg.com/isteam/ip/067a4d42-19e8-46d9-9bed-578bf62dd44e/blob-6c0c2e0.png/:/rs=w:536,h:167,cg:true,m/cr=w:536,h:167/qt=q:95"
+        alt="Logo"
+      />
+    </div>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Listings</a></li>
+      <li><a href="#">Let's Move</a></li>
+      <li><a href="#">About Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- Empty hero section that shows the background -->
+  <section class="sec1">
+    <h3>MARCI METZGER - THE RIDGE REALTY GROUP</h3>
+    <h1>Pahrump Realtor</h1>
+    <button>CALL NOW</button>
+  </section>
+
+
+
+
+
+
+
+
+  <section class="sold-section">
+  <h2>GET IT SOLD</h2>
+
+  <div class="sold-container">
+    <!-- Row 1 -->
+    <div class="sold-item">
+      <img src="https://img1.wsimg.com/isteam/stock/3395/:/cr=t:11.02%25,l:0%25,w:100%25,h:77.95%25/rs=w:1200,h:600,cg:true" alt="Luxury Kitchen" />
+      <div class="sold-text">
+        <h3>Top Residential Sales Last 5 Years</h3>
+        <p>
+          We helped nearly 90 clients in 2021, and closed 28.5 million in sales!
+          Our team works hard every day to grow and learn so that we continue to
+          excel in our market. Our clients deserve our best, and we make sure our
+          best gets better every year.
+        </p>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="sold-item reverse">
+      <img src="https://img1.wsimg.com/isteam/stock/107927/:/rs=w:1200,h:600,cg:true,m/cr=w:1200,h:600" alt="Luxury Home" />
+      <div class="sold-text">
+        <h3>Don't Just List it...</h3>
+        <p>
+          Get it SOLD! We exhaust every avenue to ensure our listings are at the
+          fingertips of every possible buyer, getting you top dollar for your home.
+        </p>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="sold-item">
+      <img src="https://img1.wsimg.com/isteam/stock/771/:/cr=t:5.36%25,l:1.76%25,w:96.47%25,h:89.29%25/rs=w:1200,h:600,cg:true,m" alt="Keys to New Home" />
+      <div class="sold-text">
+        <h3>Guide to Buyers</h3>
+        <p>
+          Nobody knows the market like we do. Enjoy having a pro at your service.
+          Market analysis, upgrades lists, contractors on speed dial, and more!
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+<section class="services-section">
+  <h2 class="services-title">Our Services</h2>
+  <div class="services-container">
+    <div class="service-box">
+      <img src="https://img1.wsimg.com/isteam/stock/12792/:/rs=w:730,h:730,cg:true,m/cr=w:730,h:730" alt="Real Estate" />
+      <h3>Real Estate Done Right</h3>
+      <p>
+        Nervous about your property adventure? Don’t be. Whether you're getting ready to buy or sell your
+        residence, looking at investment properties, or just curious about the markets, our team ensures
+        you get the best experience possible!
+      </p>
+    </div>
+
+    <div class="service-box">
+      <img src="https://img1.wsimg.com/isteam/stock/43920/:/rs=w:730,h:730,cg:true,m/cr=w:730,h:730" alt="Commercial & Residential" />
+      <h3>Commercial & Residential</h3>
+      <p>
+        Large or small, condo or mansion, we can find it and get it at the right price. Fixer-uppers?
+        Luxury? We can help with all of it! We live, work, and play in this community. Happy to help you
+        find where to put your hard-earned dollars.
+      </p>
+    </div>
+
+    <div class="service-box">
+      <img src="https://img1.wsimg.com/isteam/stock/kayaJdA/:/rs=w:730,h:730,cg:true,m/cr=w:730,h:730" alt="Rely on Expertise" />
+      <h3>Rely on Expertise</h3>
+      <p>
+        If you have questions about affordability, credit, and loan options, trust us to connect you with
+        the right people to get the answers you need in a timely fashion. We make sure you feel confident
+        and educated every step of the way.
+      </p>
+    </div>
+  </div>
+</section>
+
+  
+  
+  
+  
+<section class="search-section">
+  <div class="search-container">
+    <h2>Search Listings</h2>
+
+    <form class="search-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="location">Location</label>
+          <select id="location">
+            <option value="">Select Location</option>
+            <option value="pahrump">Pahrump</option>
+            <option value="lasvegas">Las Vegas</option>
+            <option value="henderson">Henderson</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="type">Type</label>
+          <select id="type">
+            <option value="">Select Type</option>
+            <option value="house">House</option>
+            <option value="condo">Condo</option>
+            <option value="land">Land</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="sort">Sort By</label>
+          <select id="sort">
+            <option value="">Newest</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="bedrooms">Bedrooms</label>
+          <select id="bedrooms">
+            <option>Any Number</option>
+            <option>1+</option>
+            <option>2+</option>
+            <option>3+</option>
+            <option>4+</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="baths">Baths</label>
+          <select id="baths">
+            <option>Any Number</option>
+            <option>1+</option>
+            <option>2+</option>
+            <option>3+</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="min-price">Min Price</label>
+          <input type="number" id="min-price" placeholder="e.g. 100000" />
+        </div>
+
+        <div class="form-group">
+          <label for="max-price">Max Price</label>
+          <input type="number" id="max-price" placeholder="e.g. 500000" />
+        </div>
+      </div>
+
+      <button type="submit" class="search-btn">Search Now</button>
+    </form>
+  </div>
+</section>
+
+
+
+
+  
+  
+  
+  <section class="contact-section">
+    <h2>CALL OR VISIT</h2>
+
+    <div class="contact-container">
+      <!-- Left: Form -->
+      <form class="contact-form">
+        <h3>Send Message</h3>
+
+        <label for="name">Name</label>
+        <input type="text" id="name"/>
+
+        <label for="email">Email*</label>
+        <input type="email" id="email" required />
+
+        <label for="message">Message</label>
+        <textarea id="message" rows="5"></textarea>
+
+        <button type="submit" class="send-btn">SEND</button>
+
+        <p class="disclaimer">
+          This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.
+        </p>
+      </form>
+
+      <!-- Right: Info -->
+      <div class="contact-info">
+        <button class="whatsapp-btn" onclick="window.open('https://api.whatsapp.com/send/?phone=14259412560&text&type=phone_number&app_absent=0', '_blank')">
+          <i class="fab fa-whatsapp"></i> Message us on WhatsApp
+        </button>
+
+
+        <div class="info-block">
+          <p><strong>Marci Metzger - THE RIDGE REALTY GROUP</strong></p>
+          <p>3190 HW-160, Suite F, Pahrump, Nevada 89048, United States</p>
+          <p class="phone">(206) 919-6886</p>
+        </div>
+
+        <div class="office-hours">
+          <h4>Office Hours</h4>
+          <p><strong>Open today</strong> 08:00 am – 07:00 pm</p>
+          <p><strong>Open daily</strong> 8:00 am – 7:00 pm</p>
+          <p>Appointments outside office hours available upon request. Just call!</p>
+        </div>
+      </div>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3222.825296527792!2d-116.01049622376054!3d36.21604000331069!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c74910e07e1a33%3A0x1f3e39d07b02d4db!2s3190%20NV-160%20Suite%20F%2C%20Pahrump%2C%20NV%2089048%2C%20USA!5e0!3m2!1sen!2sus!4v1739987441001!5m2!1sen!2sus"
+        width="100%"
+        height="400"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+  <section class="realtor-section">
+    <h2 class="realtor-name">MARCI METZGER</h2>
+    <div class="realtor-content">
+      <img
+        src="https://img1.wsimg.com/isteam/ip/067a4d42-19e8-46d9-9bed-578bf62dd44e/photo-5db79f9.jpg/:/cr=t:14.65%25,l:0%25,w:100%25,h:66.64%25/rs=w:730,h:730,cg:true"
+        alt="Marci Metzger"
+        class="realtor-photo"
+      />
+      <div class="realtor-details">
+        <p class="realtor-title">REALTOR FOR NEARLY 3 DECADES!</p>
+        <p class="realtor-number">206-919-6886</p>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+
+  <section class="carousel-section">
+    <h2 class="carousel-title">Photo Gallery</h2>
+    <div class="carousel">
+      <div class="carousel-images">
+        <img src="https://img1.wsimg.com/isteam/ip/067a4d42-19e8-46d9-9bed-578bf62dd44e/4787%20E%20Beacon%20Ridge-54.jpg-SMALL.JPG/:/rs=w:984,h:655" alt="Gallery Image 1">
+        <img src="https://img1.wsimg.com/isteam/ip/067a4d42-19e8-46d9-9bed-578bf62dd44e/5570%20Ailanto-14.jpg-SMALL.JPG/:/cr=t:0%25,l:0.05%25,w:99.9%25,h:99.9%25/rs=w:984,h:655" alt="Gallery Image 2">
+        <img src="https://img1.wsimg.com/isteam/ip/067a4d42-19e8-46d9-9bed-578bf62dd44e/5570%20Ailanto-45.jpg-SMALL.JPG/:/rs=w:984,h:655" alt="Gallery Image 3">
+        <img src="https://img1.wsimg.com/isteam/ip/067a4d42-19e8-46d9-9bed-578bf62dd44e/5570%20Ailanto-50.jpg-SMALL.JPG/:/rs=w:984,h:655" alt="Gallery Image 4">
+        <img src="https://img1.wsimg.com/isteam/ip/067a4d42-19e8-46d9-9bed-578bf62dd44e/4787%20E%20Beacon%20Ridge-53.jpg-SMALL.JPG/:/rs=w:984,h:656" alt="Gallery Image 5">
+        <img src="https://img1.wsimg.com/isteam/ip/067a4d42-19e8-46d9-9bed-578bf62dd44e/4787%20E%20Beacon%20Ridge-41.jpg-SMALL.JPG/:/rs=w:984,h:656" alt="Gallery Image 6">
+      </div>
+
+      <button class="prev">&#10094;</button>
+      <button class="next">&#10095;</button>
+      <div class="dots"></div>
+    </div>
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+  <footer class="footer">
+    <div class="social-icons">
+      <a href="https://www.facebook.com/MarciHomes/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/marciandlauren_nvrealtors/" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.linkedin.com/in/marci-metzger-30642496/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+      <a href="https://www.yelp.com/biz/xr3yQN_m2SgO0R_7S6p62w" target="_blank"><i class="fab fa-yelp"></i></a>
+    </div>
+
+
+    <div class="footer-logos">
+      <img src="https://img1.wsimg.com/isteam/ip/067a4d42-19e8-46d9-9bed-578bf62dd44e/BIG%20CIRCLE%202.png/:/rs=w:200,h:200,cg:true,m/cr=w:200,h:200" alt="Big Circle Logo">
+      <img src="https://img1.wsimg.com/isteam/ip/067a4d42-19e8-46d9-9bed-578bf62dd44e/Equal%20Housing%20Logo.png/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:199,h:200,cg:true" alt="Equal Housing Logo">
+      <img src="https://img1.wsimg.com/isteam/ip/067a4d42-19e8-46d9-9bed-578bf62dd44e/Realtor%20Pin.jpg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:223,h:200,cg:true" alt="Realtor Pin">
+      <img src="https://img1.wsimg.com/isteam/ip/067a4d42-19e8-46d9-9bed-578bf62dd44e/Chamber.jpg/:/rs=w:200,h:200,cg:true,m/cr=w:200,h:200" alt="Chamber Logo">
+    </div>
+
+    <p class="footer-text">
+      COPYRIGHT © 2023 MARCI METZGER HOMES - ALL RIGHTS RESERVED
+    </p>
+  </footer>
+
+</body>
+</html>
