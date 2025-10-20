@@ -5,11 +5,5 @@
       "src": "Revamp-Merci-Metzger-portfolio.html",
       "use": "@vercel/static"
     }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/Revamp-Merci-Metzger-portfolio.html"
-    }
   ]
 }
